@@ -5,17 +5,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "0.4.1"
-
 var verbose bool
 
 var rootCmd = &cobra.Command{
-	Use:     "reddit",
-	Short:   "reddit — Reddit in your terminal",
-	Version: version,
+	Use:   "reddit",
+	Short: "reddit — Reddit in your terminal",
 }
 
 func init() {
+	rootCmd.Version = fullVersion()
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Enable verbose logging")
 }
 
