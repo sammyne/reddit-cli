@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - "v*"
+      - "[0-9]*"
 
 permissions:
   contents: write
@@ -40,11 +40,9 @@ jobs:
         with:
           go-version-file: go.mod
       - name: Build
-        run: go build -o reddit-cli .
+        run: go build -ldflags "-X github.com/sammyne/reddit-cli/cmd.version=${GITHUB_REF_NAME}" -o reddit-cli .
       - name: Package
-        run: |
-          VERSION="${GITHUB_REF_NAME#v}"
-          tar czf "reddit-cli-${VERSION}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz" reddit-cli
+        run: tar czf "reddit-cli-${GITHUB_REF_NAME}-${{ matrix.goos }}-${{ matrix.goarch }}.tar.gz" reddit-cli
       - uses: actions/upload-artifact@v4
         with:
           name: reddit-cli-${{ matrix.goos }}-${{ matrix.goarch }}
